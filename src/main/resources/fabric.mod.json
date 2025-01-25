@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "basically",
+	"version": "${version}",
+	"name": "Basically",
+	"description": "Poyo",
+	"authors": [
+		"Toxi!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/basically/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.toxi.basically.Basically"
+		],
+		"fabric-datagen": [
+			"net.toxi.basically.BasicallyDataGenerator"
+		],
+		"client" : [
+			"net.toxi.basically.BasicallyClient"
+		]
+	},
+	"mixins": [
+		"basically.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

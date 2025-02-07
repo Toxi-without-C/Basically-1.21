@@ -2,6 +2,7 @@ package net.toxi.basically;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.toxi.basically.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,6 @@ public class Basically implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-
+		ModItems.registerModItems();
 	}
 }

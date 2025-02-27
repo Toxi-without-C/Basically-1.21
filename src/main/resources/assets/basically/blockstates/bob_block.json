@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "basically:block/bob_block", "transparent": true }
+  }
+}

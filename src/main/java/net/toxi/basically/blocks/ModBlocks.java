@@ -18,14 +18,10 @@ import javax.lang.model.element.Name;
 
 public class ModBlocks {
 
-    public static final Block BOB_BLOCK = registerBlock("bob_block", new TransparentBlock(AbstractBlock.Settings.create().strength(4f).nonOpaque()));
+    public static final Block BOB_BLOCK = registerBlock("bob_block", new BobBlock(AbstractBlock.Settings.create().strength(4f).nonOpaque()));
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Basically.MOD_ID, name), block);
-    }
-
-    public static void registerRenderLayers() {
-        BlockRenderLayerMap.INSTANCE.putBlock(BOB_BLOCK, RenderLayer.getTranslucent());
     }
     public static void registerBlockItem(String name, Block block) {
         Registry.register(Registries.ITEM, Identifier.of(Basically.MOD_ID,name), new BlockItem(block, new Item.Settings()));
@@ -34,7 +30,7 @@ public class ModBlocks {
 
     public static void registerModBlock() {
         Basically.LOGGER.info("Register blocks for "+ Basically.MOD_ID);
-
+        BlockRenderLayerMap.INSTANCE.putBlock(BOB_BLOCK, RenderLayer.getTranslucent());
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(fabricItemGroupEntries ->
                 fabricItemGroupEntries.add(ModBlocks.BOB_BLOCK));
 

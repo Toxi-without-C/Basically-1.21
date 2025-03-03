@@ -15,6 +15,6 @@ public class Basically implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlock();
-		ModBlocks.registerRenderLayers();
+		FallingBlockVelocityHandler.register();
 	}
 }

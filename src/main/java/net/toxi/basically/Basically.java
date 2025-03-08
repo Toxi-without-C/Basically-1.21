@@ -3,6 +3,7 @@ package net.toxi.basically;
 import net.fabricmc.api.ModInitializer;
 
 import net.toxi.basically.blocks.ModBlocks;
+import net.toxi.basically.entities.ModEntities;
 import net.toxi.basically.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ public class Basically implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlock();
+		ModEntities.registerModEntities();
 		FallingBlockVelocityHandler.register();
 	}
 }

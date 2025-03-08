@@ -1,20 +1,18 @@
 package net.toxi.basically;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 
 
 public class FallingBlockVelocityHandler {
@@ -86,11 +84,22 @@ public class FallingBlockVelocityHandler {
                     case DOWN->entity.addVelocity(0.0, 0.02, 0.0);
                 }
             }
-            Box entityBox = entity.getBoundingBox().expand(0.1); // Étend légèrement la zone de collision
-            List<Entity> entities = world.getEntitiesByClass(Entity.class, entityBox, e -> !e.equals(entity));
+            Box entityBox = entity.getBoundingBox().expand(0.2); // Étend légèrement la zone de collision
+            List<Entity> entities = world.getEntitiesByClass(Entity.class, entityBox, e ->
+                    !e.equals(entity) &&
+                    !(e instanceof FallingBlockEntity));
 
             for (Entity e : entities) {
-                e.addVelocity(entity.getVelocity().x*1.5,entity.getVelocity().y*1.5,entity.getVelocity().z*1.5);
+                double pushStrength = 1.1; // Valeur ajustable pour contrôler la poussée
+
+                // Appliquer la poussée dans la même direction que le FallingBlockEntity
+                e.addVelocity(
+                        Math.signum(entity.getVelocity().x) * pushStrength,
+                        Math.signum(entity.getVelocity().y) * pushStrength,
+                        Math.signum(entity.getVelocity().z) * pushStrength
+                );
+
+                e.velocityModified = true; // S'assure que Minecraft applique la nouvelle vélocité
             }
 
             }

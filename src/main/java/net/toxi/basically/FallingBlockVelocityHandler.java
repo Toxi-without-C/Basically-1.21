@@ -44,12 +44,21 @@ public class FallingBlockVelocityHandler {
             case DOWN -> pos.add(0,1,0);
         };
     }
+
     private static void onWorldTick(ServerWorld world) {
         Iterator<Map.Entry<FallingBlockEntity, DimensionData>> iterator = trackedEntities.entrySet().iterator();
+        float velocityplus =0;
         while (iterator.hasNext()) {
             Map.Entry<FallingBlockEntity, DimensionData> entry = iterator.next();
             FallingBlockEntity entity = entry.getKey();
             DimensionData data = entry.getValue();
+            if (velocityplus<=0.3){
+                velocityplus+=0.05;
+            } else if (velocityplus<=0.5) {
+                velocityplus += 0.1;
+            } else if (velocityplus<=1.5) {
+                velocityplus+=0.2;
+            }
             world.getServer().execute(() -> {
                 entity.setNoGravity(true);
             });
@@ -64,7 +73,7 @@ public class FallingBlockVelocityHandler {
             }
             System.out.println("Tracking " + trackedEntities.size() + " entities.");
 
-            boolean hasCollision = data.world.getBlockState(nextPos).isFullCube(data.world,nextPos);
+            boolean hasCollision = !data.world.getBlockState(nextPos).getCollisionShape(world,nextPos).isEmpty();
             if (hasCollision) {
                 // L'entité touche un mur, elle doit être transformée en bloc
                     System.out.println("Collision detected at " + nextPos + " -> " + world.getBlockState(nextPos));
@@ -76,12 +85,12 @@ public class FallingBlockVelocityHandler {
             } else {
                 // Applique la vitesse pour continuer la chute
                 switch (data.direction) {
-                    case EAST->entity.addVelocity(-0.02, 0.0, 0.0);
-                    case WEST->entity.addVelocity(0.02, 0.0, 0.0);
-                    case NORTH->entity.addVelocity(0.0, 0.0, 0.02);
-                    case SOUTH->entity.addVelocity(0.0, 0.0, -0.02);
-                    case UP->entity.addVelocity(0.0, -0.02, 0.0);
-                    case DOWN->entity.addVelocity(0.0, 0.02, 0.0);
+                    case EAST->entity.addVelocity(-0.01*(1+velocityplus), 0.0, 0.0);
+                    case WEST->entity.addVelocity(0.01, 0.0, 0.0);
+                    case NORTH->entity.addVelocity(0.0, 0.0, 0.01*(1+velocityplus));
+                    case SOUTH->entity.addVelocity(0.0, 0.0, -0.01*(1+velocityplus));
+                    case UP->entity.addVelocity(0.0, -0.01*(1+velocityplus), 0.0);
+                    case DOWN->entity.addVelocity(0.0, 0.01*(1+velocityplus), 0.0);
                 }
             }
             Box entityBox = entity.getBoundingBox().expand(0.2); // Étend légèrement la zone de collision
